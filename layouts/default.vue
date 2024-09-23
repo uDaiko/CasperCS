@@ -20,6 +20,7 @@
 
 
     </header>
+    <slot />
 </template>
 
 
