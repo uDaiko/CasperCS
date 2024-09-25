@@ -19,7 +19,9 @@ const summaries: InvestmentCollection[] = [
     <main class="container mx-auto px-4 py-8">
         <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div v-for="summary in summaries" :key="summary.name">
-                <InvestmentSummary :type="summary.type" :name="summary.name" />
+                <router-link :to="`/portfolio/${summary.name}`">
+                    <InvestmentSummary :type="summary.type" :name="summary.name" />
+                </router-link>
             </div>
         </section>
     </main>
