@@ -10,5 +10,8 @@ export default defineNuxtConfig({
   },
   supabase: {
     redirect:false
+  },
+  runtimeConfig: {
+    secretApiKey: process.env.COINGECKO_KEY
   }
 })
