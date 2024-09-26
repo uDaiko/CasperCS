@@ -16,8 +16,6 @@ const props = defineProps<{
       <div class="text-4xl font-bold mb-4">$24,369.41</div>
      
     </div>
-
-
   
     <div class="bg-gradient-to-br from-red-600 to-yellow-800 rounded-xl p-6 shadow-lg" v-if="type === 'Stocks'">
       <div class="flex justify-between items-center mb-4">
