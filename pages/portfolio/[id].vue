@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import type { StockRow } from '~/types';
+
 const route = useRoute()
+const toast = useToast()
 
 const cryptoColumns = [{
   key: 'name',
@@ -12,19 +15,36 @@ const cryptoColumns = [{
   label: 'Amount'
 }]
 
+
 const coins = [{
   name: 'Bitcoin',
-  price: '80000',
-  amount: '5',
-}, {
-  name: 'Ethereum',
-  price: '4000',
-  amount: '2',
-}, {
-  name: 'Polkadot',
-  price: '5',
-  amount: '100',
-}]
+ }]
+
+ let stockDataRows:StockRow[] = []
+ 
+
+//  const { fetchCoin } = useFetchCoinPrice(coins[0].name);
+
+const {fetchStockPrice}  =useFetchStockPrice('AAPL')
+const result = await fetchStockPrice();
+if(result.error){
+    toast.add({
+          title: 'stock data could not be fetched!',
+          icon: 'i-heroicons-exclamation-circle',
+          color: 'red'
+        })
+}
+
+console.log(result)
+
+// const ticker:string = data.value.ticker
+// const closePrice:number = data.value.results[0].c
+// stockDataRows.push({ name: ticker, price: closePrice });
+
+ 
+// // coinData.value = await fetchCoin(); 
+
+// console.log(stockData.value)
 </script>
 
 <template>
@@ -32,7 +52,7 @@ const coins = [{
         <span class="font-bold"> Your Portfolio {{ route.params.id }}</span>
    
     <UCard class="mt-6">
-        <UTable :columns="cryptoColumns" :rows="coins" />
+        <UTable :columns="cryptoColumns" :rows="stockDataRows" />
     </UCard>
 </UContainer>
 </template>
