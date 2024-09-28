@@ -6,3 +6,8 @@ export interface InvestmentCollection {
     type: InvestmentType
     name: string
 }
+
+export interface StockRow {
+    name: string
+    price: number
+}
