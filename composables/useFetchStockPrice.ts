@@ -1,5 +1,7 @@
 export const useFetchStockPrice = (stock: string) => {
   const url = `https://api.polygon.io/v2/aggs/ticker/${stock}/prev?appiKey=${process.env.STOCKAPI_KEY}`;
+  const supabase = useSupabaseClient()
+  const user = useSupabaseUser()
 
   const fetchStockPrice = async () => {
     const { data, error } = await useAsyncData("stockData", () => $fetch(url));
