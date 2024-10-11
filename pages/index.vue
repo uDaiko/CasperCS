@@ -23,6 +23,8 @@ const summaries: InvestmentCollection[] = [
                     <InvestmentSummary :type="summary.type" :name="summary.name" />
                 </router-link>
             </div>
+            
         </section>
+        <NewPortfolio />
     </main>
 </template>
