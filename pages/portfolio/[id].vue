@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import AssetList from '~/components/asset-list.vue';
 import type { StockRow } from '~/types';
+const supabase = useSupabaseClient()
 
 const route = useRoute()
 const toast = useToast()
+const assetList = ref([])
 
 const cryptoColumns = [{
   key: 'name',
@@ -23,19 +26,22 @@ const coins = [{
  let stockDataRows:StockRow[] = []
  
 
-//  const { fetchCoin } = useFetchCoinPrice(coins[0].name);
+ const {data, error} = await supabase.from('transactions').select()
+ assetList.value = data
+ console.log(assetList.value)
+ 
 
-const {fetchStockPrice}  =useFetchStockPrice('AAPL')
-const result = await fetchStockPrice();
-if(result.error){
-    toast.add({
-          title: 'stock data could not be fetched!',
-          icon: 'i-heroicons-exclamation-circle',
-          color: 'red'
-        })
-}
+// const {fetchStockPrice}  =useFetchStockPrice('AAPL')
+// const result = await fetchStockPrice();
+// if(result.error){
+//     toast.add({
+//           title: 'stock data could not be fetched!',
+//           icon: 'i-heroicons-exclamation-circle',
+//           color: 'red'
+//         })
+// }
 
-console.log(result)
+// console.log(result)
 
 // const ticker:string = data.value.ticker
 // const closePrice:number = data.value.results[0].c
@@ -51,8 +57,6 @@ console.log(result)
     <UContainer class="py-8">
         <span class="font-bold"> Your Portfolio {{ route.params.id }}</span>
    
-    <UCard class="mt-6">
-        <UTable :columns="cryptoColumns" :rows="stockDataRows" />
-    </UCard>
+    <AssetList :asset-list="assetList"/>
 </UContainer>
 </template>
