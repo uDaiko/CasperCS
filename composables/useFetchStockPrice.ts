@@ -1,8 +1,4 @@
-type StockApiResponse = {
-  results: Array<{
-    c: number; // c represents the closing price of the previous day
-  }>;
-};
+import type { StockApiResponse } from "~/types";
 
 export const useCalculateStockTotal = (asset) => {
   const url = computed(
