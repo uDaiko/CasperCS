@@ -8,6 +8,9 @@ export interface InvestmentCollection {
 }
 
 export interface StockRow {
+    id: number
     name: string
-    price: number
+    amount: number
+    total: number
+    
 }
