@@ -3,7 +3,7 @@ import type { StockApiResponse } from "~/types";
 export const useCalculateStockTotal = (asset) => {
   const url = computed(
     () =>
-      `https://api.polygon.io/v2/aggs/ticker/${asset.name}/prev?apiKey=${process.env.STOCKAPI_KEY}`
+      `https://api.polygon.io/v2/aggs/ticker/${asset.ticker}/prev?apiKey=${process.env.STOCKAPI_KEY}`
   );
   const supabase = useSupabaseClient();
   const user = useSupabaseUser();
