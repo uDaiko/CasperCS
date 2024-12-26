@@ -22,7 +22,6 @@ export const useCalculateStockTotal = (asset) => {
       console.error("Error fetching stock price:", error.value.message);
       return;
     }
-
     lastClosePrice.value = data.value.results[0].c;
   };
   fetchStockPrice();
