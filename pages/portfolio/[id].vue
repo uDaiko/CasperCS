@@ -1,35 +1,28 @@
 <script setup lang="ts">
-import AssetList from '~/components/asset-list.vue';
-import type { StockRow } from '~/types';
-const supabase = useSupabaseClient()
+import AssetTable from "~/components/asset-table.vue";
+import { useCalculateStockTotal } from "~/composables/useFetchStockPrice";
+const supabase = useSupabaseClient();
 
-const route = useRoute()
-const toast = useToast()
-const assetList = ref([])
+const route = useRoute();
+const toast = useToast();
+const rawassetList = ref([]);
 
-const cryptoColumns = [{
-  key: 'name',
-  label: 'Name'
-}, {
-  key: 'price',
-  label: 'Price'
-}, {
-  key: 'amount',
-  label: 'Amount'
-}]
+const { data, error } = await supabase.from("transactions").select();
+rawassetList.value = data;
 
+const { total } = useCalculateStockTotal(rawassetList.value[0]);
+console.log("this is the total");
+console.log(total);
 
-const coins = [{
-  name: 'Bitcoin',
- }]
-
- let stockDataRows:StockRow[] = []
- 
-
- const {data, error} = await supabase.from('transactions').select()
- assetList.value = data
- console.log(assetList.value)
- 
+const finalizedAssetList = computed(() => {
+  return rawassetList.value.map((asset) => {
+    const { total } = useCalculateStockTotal(asset);
+    return {
+      ...asset,
+      total,
+    };
+  });
+});
 
 // const {fetchStockPrice}  =useFetchStockPrice('AAPL')
 // const result = await fetchStockPrice();
@@ -47,16 +40,15 @@ const coins = [{
 // const closePrice:number = data.value.results[0].c
 // stockDataRows.push({ name: ticker, price: closePrice });
 
- 
-// // coinData.value = await fetchCoin(); 
+// // coinData.value = await fetchCoin();
 
 // console.log(stockData.value)
 </script>
 
 <template>
-    <UContainer class="py-8">
-        <span class="font-bold"> Your Portfolio {{ route.params.id }}</span>
-   
-    <AssetList :asset-list="assetList"/>
-</UContainer>
+  <UContainer class="py-8">
+    <span class="font-bold"> Your Portfolio {{ route.params.id }}</span>
+
+    <AssetTable :asset-data="finalizedAssetList" />
+  </UContainer>
 </template>
