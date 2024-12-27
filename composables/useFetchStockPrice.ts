@@ -1,10 +1,6 @@
 import type { StockApiResponse } from "~/types";
 
 export const useCalculateStockTotal = (asset) => {
-  const url = computed(
-    () =>
-      `https://api.polygon.io/v2/aggs/ticker/${asset.ticker}/prev?apiKey=${process.env.STOCKAPI_KEY}`
-  );
   const supabase = useSupabaseClient();
   const user = useSupabaseUser();
 
@@ -16,16 +12,25 @@ export const useCalculateStockTotal = (asset) => {
   });
 
   const fetchStockPrice = async () => {
-    const { data, error } = await useFetch<StockApiResponse>(url.value);
-
+    const { data, error } = await useAsyncData<StockApiResponse>(
+      "stockdata",
+      () =>
+        $fetch(`/api/stock-price`, {
+          params: { ticker: asset.ticker },
+        })
+    );
+    console.log("response data");
+    console.log(data);
     if (error.value) {
       console.error("Error fetching stock price:", error.value.message);
       return;
     }
     lastClosePrice.value = data.value.results[0].c;
   };
+
   fetchStockPrice();
   return {
     total,
+    fetchStockPrice,
   };
 };
