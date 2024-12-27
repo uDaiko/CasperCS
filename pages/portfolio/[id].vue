@@ -10,10 +10,6 @@ const rawassetList = ref([]);
 const { data, error } = await supabase.from("transactions").select();
 rawassetList.value = data;
 
-const { total } = useCalculateStockTotal(rawassetList.value[0]);
-console.log("this is the total");
-console.log(total);
-
 const finalizedAssetList = computed(() => {
   return rawassetList.value.map((asset) => {
     const { total } = useCalculateStockTotal(asset);
@@ -23,26 +19,6 @@ const finalizedAssetList = computed(() => {
     };
   });
 });
-
-// const {fetchStockPrice}  =useFetchStockPrice('AAPL')
-// const result = await fetchStockPrice();
-// if(result.error){
-//     toast.add({
-//           title: 'stock data could not be fetched!',
-//           icon: 'i-heroicons-exclamation-circle',
-//           color: 'red'
-//         })
-// }
-
-// console.log(result)
-
-// const ticker:string = data.value.ticker
-// const closePrice:number = data.value.results[0].c
-// stockDataRows.push({ name: ticker, price: closePrice });
-
-// // coinData.value = await fetchCoin();
-
-// console.log(stockData.value)
 </script>
 
 <template>
