@@ -1,18 +1,15 @@
 <script setup lang="ts">
+import type { StockRow } from "~/types";
 
 const props = defineProps({
-    assetData:Object
-})
+  assetData: Object,
+});
 
-let stockDataRow = []
-
+let stockDataRow: StockRow[] = [];
 </script>
 
 <template>
   <div>{{ assetData }}</div>
-  
-  <UTable> 
 
-    
-  </UTable>
+  <UTable> </UTable>
 </template>
