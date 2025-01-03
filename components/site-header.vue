@@ -1,22 +1,74 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const user = useSupabaseUser();
+const client = useSupabaseClient();
+
+const signOut = async () => {
+  try {
+    const { error } = await client.auth.signOut();
+    if (error) throw error;
+    console.log("Logout successful");
+    await navigateTo("/login");
+  } catch (error) {
+    console.error("Logout error:", error);
+  }
+};
+const itemsAccount = [
+  [
+    {
+      label: user.value?.email,
+      slot: "account",
+      disabled: true,
+    },
+  ],
+  [
+    {
+      label: "Sign out",
+      icon: "i-heroicons-arrow-left-on-rectangle",
+      click: signOut,
+    },
+  ],
+];
+</script>
 
 <template>
   <header class="bg-gray-800 flex justify-between items-center py-2 px-8">
     <h1 class="text-3xl font-bold text-cool-100">CasperCS</h1>
     <div class="flex items-center space-x-4">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="size-8 fill-gray-600 hover:scale-110 hover:fill-gray-800"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-        />
-      </svg>
+      <UDropdown
+        :items="itemsAccount"
+        :ui="{ item: { disabled: 'cursor-text select-text' } }"
+        v-if="user"
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-8 fill-gray-600 hover:scale-110 hover:fill-gray-800"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+          />
+        </svg>
+        <template #account="{ item }">
+          <div class="text-left">
+            <p>Signed in as</p>
+            <p class="truncate font-medium text-gray-900 dark:text-white">
+              {{ item.label }}
+            </p>
+          </div>
+        </template>
+
+        <template #item="{ item }">
+          <span class="truncate">{{ item.label }}</span>
+
+          <UIcon
+            :name="item.icon"
+            class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-500 ms-auto"
+          />
+        </template>
+      </UDropdown>
 
       <svg
         xmlns="http://www.w3.org/2000/svg"
