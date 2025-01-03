@@ -45,15 +45,15 @@ const handleLogin = async () => {
   }
 };
 
-// watch(
-//   user,
-//   (user) => {
-//     if (user) {
-//       navigateTo("/");
-//     }
-//   },
-//   { immediate: true }
-// );
+watch(
+  user,
+  (user) => {
+    if (user) {
+      navigateTo("/");
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -86,6 +86,9 @@ const handleLogin = async () => {
     </form>
   </UCard>
   <UCard v-else>
-    <template #header> You have been signed in! Go to the main page </template>
+    <template #header>
+      You have been signed in! Go to the main page
+      <button @click="navigateTo('/')">Go to Main Page</button>
+    </template>
   </UCard>
 </template>
