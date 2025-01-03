@@ -57,7 +57,7 @@ const handleLogin = async () => {
 </script>
 
 <template>
-  <UCard v-if="!success" class="bg-slate-700">
+  <UCard v-if="!user" class="bg-slate-700 mt-6">
     <template #header>Sign-in below</template>
     <form @submit.prevent="handleLogin">
       <UFormGroup
@@ -65,7 +65,7 @@ const handleLogin = async () => {
         label="Email"
         name="email"
         :required="true"
-        help="After signing in you receive an login email"
+        help="After signing in you receive a login email"
       >
         <UInput
           type="email"
@@ -82,14 +82,10 @@ const handleLogin = async () => {
           v-model="password"
         />
       </UFormGroup>
-      <UButton type="submit" variant="solid" @click="isLoggedIn = true"
-        >Login</UButton
-      >
+      <UButton type="submit" variant="solid">Login</UButton>
     </form>
   </UCard>
   <UCard v-else>
-    <template #header>
-      You have been signed in! You will now be redirected to the main page
-    </template>
+    <template #header> You have been signed in! Go to the main page </template>
   </UCard>
 </template>
