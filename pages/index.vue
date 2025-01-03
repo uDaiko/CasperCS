@@ -7,11 +7,7 @@ const { fetchStockPortfolios } = useFetchPortfolios();
 onBeforeMount(async () => {
   const data = await fetchStockPortfolios();
   if (data) {
-    console.log("this is portfolios.value");
-    console.log(portfolios.value);
     portfolios.value = data;
-    console.log("this is portfolios.value");
-    console.log(portfolios.value);
   }
 });
 </script>
