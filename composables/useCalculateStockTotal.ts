@@ -4,14 +4,7 @@ export const useCalculateStockTotal = (asset) => {
   const supabase = useSupabaseClient();
   const user = useSupabaseUser();
 
-  const lastClosePrice = ref(null);
-
-  const total = computed(() => {
-    if (!lastClosePrice.value) return null;
-    return lastClosePrice.value * asset.amount;
-  });
-
-  const fetchStockPrice = async () => {
+  const calculateAssetPrice = async () => {
     const { data, error } = await useAsyncData<StockApiResponse>(
       "stockdata",
       () =>
@@ -25,12 +18,10 @@ export const useCalculateStockTotal = (asset) => {
       console.error("Error fetching stock price:", error.value.message);
       return;
     }
-    lastClosePrice.value = data.value.results[0].c;
+    return data.value.results[0].c * asset.amount;
   };
 
-  fetchStockPrice();
   return {
-    total,
-    fetchStockPrice,
+    calculateAssetPrice,
   };
 };
