@@ -55,6 +55,8 @@ const portfolioValue = computed(() => {
       <span class="text-lg font-semibold">{{ name }} portfolio</span>
       <span class="text-green-300"></span>
     </div>
-    <div class="text-4xl font-bold mb-4">${{ portfolioValue }}</div>
+    <div class="text-4xl font-bold mb-4">
+      ${{ parseFloat(portfolioValue.toFixed(4)) }}
+    </div>
   </div>
 </template>

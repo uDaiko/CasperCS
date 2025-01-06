@@ -33,7 +33,7 @@ stockDataRows = props.assetData.map((item) => ({
   id: item.id,
   ticker: item.ticker,
   amount: item.amount,
-  total: item.total,
+  total: parseFloat(item.total.toFixed(4)),
 }));
 </script>
 
