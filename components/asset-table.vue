@@ -14,6 +14,7 @@ const columns = [
   {
     key: "ticker",
     label: "Ticker",
+    sortable: true,
   },
   {
     key: "amount",
@@ -30,14 +31,12 @@ const columns = [
 let stockDataRows: StockRow[] = [];
 stockDataRows = props.assetData.map((item) => ({
   id: item.id,
-  name: item.ticker,
+  ticker: item.ticker,
   amount: item.amount,
   total: item.total,
 }));
 </script>
 
 <template>
-  <div>{{ assetData }}</div>
-
   <UTable :columns="columns" :rows="stockDataRows"> </UTable>
 </template>
