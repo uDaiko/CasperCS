@@ -58,19 +58,19 @@ watch(
 
 <template>
   <UCard v-if="!user" class="bg-slate-700 mt-6">
-    <template #header>Sign-in below</template>
+    <template #header>Sign-in</template>
     <form @submit.prevent="handleLogin">
       <UFormGroup
         class="mb-4"
         label="Email"
         name="email"
         :required="true"
-        help="After signing in you receive a login email"
+        help="After signing in you will be redirected to the main page"
       >
         <UInput
           type="email"
-          placeholder="Type in your Email"
-          class="bg-black"
+          placeholder="Type in your email"
+          class="bg-black mb-2"
           required="true"
           v-model="email"
         />
