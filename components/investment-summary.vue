@@ -13,8 +13,6 @@ const { data } = await supabase
   .select()
   .eq("portfolio_id", props.portfolioId);
 
-console.log("this is the data");
-console.log(data);
 rawassetList.value = data;
 
 const calculateFinalizedAssetList = async () => {
@@ -26,22 +24,15 @@ const calculateFinalizedAssetList = async () => {
       total,
     };
   });
-  console.log("theassetpromises");
-  console.log(assetPromises);
   return await Promise.all(assetPromises);
 };
 const finalizedAssetList = await calculateFinalizedAssetList();
-console.log("thefinalassetlist");
-console.log(finalizedAssetList);
 
 const portfolioValue = computed(() => {
   return finalizedAssetList.reduce((accumulator, currentObject) => {
     return accumulator + currentObject.total;
   }, 0);
 });
-
-console.log("total portfolio value");
-console.log(portfolioValue);
 </script>
 
 <template>
