@@ -40,7 +40,12 @@ const settingsMessage = () => {
 
 <template>
   <header class="bg-gray-800 flex justify-between items-center py-2 px-8">
-    <h1 class="text-3xl font-bold text-cool-100">CasperCS</h1>
+    <h1
+      class="text-3xl font-bold text-cool-100 cursor-pointer"
+      @click="navigateTo('/')"
+    >
+      CasperCS
+    </h1>
     <div class="flex items-center space-x-4">
       <UDropdown
         :items="itemsAccount"
