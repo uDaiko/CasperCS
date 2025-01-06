@@ -3,7 +3,45 @@ import type { InvestmentType } from "~/types";
 const props = defineProps<{
   type: InvestmentType;
   name: string;
+  portfolioId: string;
 }>();
+const rawassetList = ref([]);
+const supabase = useSupabaseClient();
+
+const { data } = await supabase
+  .from("stocks")
+  .select()
+  .eq("portfolio_id", props.portfolioId);
+
+console.log("this is the data");
+console.log(data);
+rawassetList.value = data;
+
+const calculateFinalizedAssetList = async () => {
+  const assetPromises = rawassetList.value.map(async (asset) => {
+    const { calculateAssetPrice } = useCalculateStockTotal(asset);
+    const total = await calculateAssetPrice();
+    return {
+      ...asset,
+      total,
+    };
+  });
+  console.log("theassetpromises");
+  console.log(assetPromises);
+  return await Promise.all(assetPromises);
+};
+const finalizedAssetList = await calculateFinalizedAssetList();
+console.log("thefinalassetlist");
+console.log(finalizedAssetList);
+
+const portfolioValue = computed(() => {
+  return finalizedAssetList.reduce((accumulator, currentObject) => {
+    return accumulator + currentObject.total;
+  }, 0);
+});
+
+console.log("total portfolio value");
+console.log(portfolioValue);
 </script>
 
 <template>
@@ -13,7 +51,7 @@ const props = defineProps<{
   >
     <div class="flex justify-between items-center mb-4">
       <span class="text-lg font-semibold">{{ name }} Portfolio</span>
-      <span class="text-green-300">24HR +5.94%</span>
+      <span class="text-green-300"></span>
     </div>
     <div class="text-4xl font-bold mb-4">$24,369.41</div>
   </div>
@@ -23,9 +61,9 @@ const props = defineProps<{
     v-if="type === 'Stocks'"
   >
     <div class="flex justify-between items-center mb-4">
-      <span class="text-lg font-semibold">{{ name }} Portfolio</span>
-      <span class="text-green-300">24HR +5.94%</span>
+      <span class="text-lg font-semibold">{{ name }} portfolio</span>
+      <span class="text-green-300"></span>
     </div>
-    <div class="text-4xl font-bold mb-4">$24,369.41</div>
+    <div class="text-4xl font-bold mb-4">${{ portfolioValue }}</div>
   </div>
 </template>
