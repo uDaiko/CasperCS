@@ -15,7 +15,7 @@ export default defineNuxtConfig({
     },
   },
   supabase: {
-    redirect: false,
+    redirect: true,
   },
   runtimeConfig: {
     STOCKAPI_KEY: process.env.STOCKAPI_KEY,
