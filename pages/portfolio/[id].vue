@@ -26,7 +26,7 @@ const finalizedAssetList = await calculateFinalizedAssetList();
 
 <template>
   <UContainer class="py-8">
-    <span class="font-bold"> Your Portfolio {{ route.params.id }}</span>
+    <span class="font-bold">{{ route.query.name }} portfolio</span>
     <AssetTable :asset-data="finalizedAssetList" />
   </UContainer>
 </template>
