@@ -12,8 +12,6 @@ export const useCalculateStockTotal = (asset) => {
           params: { ticker: asset.ticker },
         })
     );
-    console.log("response data");
-    console.log(data);
     if (error.value) {
       console.error("Error fetching stock price:", error.value.message);
       return;
