@@ -30,7 +30,7 @@ onBeforeMount(async () => {
           />
         </NuxtLink>
       </div>
+      <NewPortfolioButton />
     </section>
-    <NewPortfolio />
   </main>
 </template>
