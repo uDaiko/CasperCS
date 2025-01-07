@@ -48,7 +48,7 @@ const portfolioValue = computed(() => {
   </div>
 
   <div
-    class="bg-gradient-to-br from-red-600 to-yellow-800 rounded-xl p-6 shadow-lg"
+    class="bg-gradient-to-br from-red-600 to-yellow-800 rounded-xl p-4 shadow-lg"
     v-if="type === 'Stocks'"
   >
     <div class="flex justify-between items-center mb-4">
