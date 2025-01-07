@@ -8,7 +8,7 @@ export default defineNuxtConfig({
       enabled: true,
     },
   },
-  modules: ["@nuxt/ui", "@nuxtjs/supabase", "@nuxtjs/google-fonts"],
+  modules: ["@nuxt/ui", "@nuxtjs/supabase", "@nuxtjs/google-fonts", "@nuxt/icon"],
   googleFonts: {
     families: {
       Inter: [100, 200, 300, 400, 500, 600, 700],
