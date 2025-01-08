@@ -37,7 +37,7 @@ const portfolioValue = computed(() => {
 
 <template>
   <div
-    class="bg-gradient-to-br from-purple-600 to-indigo-800 rounded-xl p-6 shadow-lg"
+    class="bg-gradient-to-br from-purple-600 to-indigo-800 rounded-xl p-4 shadow-lg"
     v-if="type === 'Crypto'"
   >
     <div class="flex justify-between items-center mb-4">
