@@ -1,9 +1,18 @@
 <script setup>
 const portfolioCategories = ["Stocks", "Crypto"];
+const props = defineProps({
+  modelValue: Boolean,
+});
+const emit = defineEmits(["update:modelValue"]);
+
+const isModalOpen = computed({
+  get: () => props.modelValue,
+  set: (value) => emit("update:modelValue", value),
+});
 </script>
 
 <template>
-  <UModal v-model="isOpen">
+  <UModal v-model="isModalOpen">
     <UCard>
       <h2>Add a new portfolio</h2>
 
@@ -18,7 +27,10 @@ const portfolioCategories = ["Stocks", "Crypto"];
         </UFormGroup>
 
         <UFormGroup label="Amount" :required="true" name="amount" class="mb-4">
-          <USelect placeholder="For what asset class is this portfolio?" />
+          <USelect
+            placeholder="For what asset class is this portfolio?"
+            :options="portfolioCategories"
+          />
         </UFormGroup>
 
         <UButton variant="solid" label="Save" type="submit" />
