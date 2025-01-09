@@ -6,8 +6,15 @@ const supabase = useSupabaseClient();
 const route = useRoute();
 const rawassetList = ref([]);
 const isModalOpen = ref(false);
+const portfolioId = route.params.id;
 
-const { data } = await supabase.from("stocks").select();
+const { data } = await supabase
+  .from("stocks")
+  .select()
+  .eq("portfolio_id", portfolioId);
+
+console.log("the data");
+console.log(data);
 
 rawassetList.value = data;
 
