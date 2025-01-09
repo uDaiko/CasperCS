@@ -5,9 +5,11 @@ const props = defineProps({
   modelValue: Boolean,
 });
 const emit = defineEmits(["update:modelValue"]);
+const toast = useToast();
 
 const name = ref();
 const category = ref();
+let isDisabled = ref(false);
 
 const isModalOpen = computed({
   get: () => props.modelValue,
@@ -15,14 +17,27 @@ const isModalOpen = computed({
 });
 
 const save = async () => {
-  const { error } = await supabase
-    .from("portfolios")
-    .insert({
+  isDisabled.value = true;
+
+  try {
+    const { error } = await supabase.from("portfolios").insert({
       id: undefined,
       name: name.value,
       type: category.value,
       user_id: undefined,
     });
+    if (error) throw error;
+  } catch (err) {
+    console.log(err);
+    toast.add({
+      description: "Failed creating a new portfolio",
+      icon: "i-heroicons-exclamation-circle",
+      color: "red",
+    });
+  } finally {
+    isDisabled.value = false;
+    isModalOpen.value = false;
+  }
 };
 </script>
 
@@ -57,7 +72,13 @@ const save = async () => {
           />
         </UFormGroup>
 
-        <UButton color="black" label="Save" type="submit" @click="save" />
+        <UButton
+          color="black"
+          label="Save"
+          type="submit"
+          @click="save"
+          :disabled="isLoading"
+        />
       </UForm>
     </UCard>
   </UModal>
