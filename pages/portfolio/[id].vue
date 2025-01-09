@@ -5,6 +5,7 @@ const supabase = useSupabaseClient();
 
 const route = useRoute();
 const rawassetList = ref([]);
+const isModalOpen = ref(false);
 
 const { data } = await supabase.from("stocks").select();
 
@@ -26,7 +27,7 @@ const finalizedAssetList = await calculateFinalizedAssetList();
 
 <template>
   <UContainer class="py-8">
-    <span class="font-bold">{{ route.query.name }} portfolio</span>
+    <UButton color="gray" label="Add New Asset" @click="isModalOpen = true" />
     <AssetTable :asset-data="finalizedAssetList" />
   </UContainer>
 </template>
