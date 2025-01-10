@@ -56,7 +56,7 @@ const portfolioValue = computed(() => {
       <span class="text-green-300"></span>
     </div>
     <div class="text-4xl font-bold mb-4">
-      ${{ parseFloat(portfolioValue.toFixed(4)) }}
+      ${{ isNaN(portfolioValue) ? 0 : parseFloat(portfolioValue.toFixed(4)) }}
     </div>
   </div>
 </template>
