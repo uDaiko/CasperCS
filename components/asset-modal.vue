@@ -13,6 +13,19 @@ const isModalOpen = computed({
   <UModal v-model="isModalOpen">
     <UCard>
       <h2 class="mb-3">Add a new asset</h2>
+      <UForm>
+        <UFormGroup
+          label="Portfolio Name"
+          name="name"
+          class="mb-4"
+          :required="true"
+        >
+          <UInput
+            placeholder="What should the portfolio be called"
+            v-model="name"
+          />
+        </UFormGroup>
+      </UForm>
     </UCard>
   </UModal>
 </template>
