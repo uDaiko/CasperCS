@@ -37,4 +37,5 @@ const finalizedAssetList = await calculateFinalizedAssetList();
     <UButton color="gray" label="Add New Asset" @click="isModalOpen = true" />
     <AssetTable :asset-data="finalizedAssetList" />
   </UContainer>
+  <AssetModal v-model="isModalOpen" />
 </template>
