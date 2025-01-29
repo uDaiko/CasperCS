@@ -3,7 +3,7 @@ export const useFetchPortfolios = () => {
     const supabase = useSupabaseClient();
 
     const { data: portfolioData, error: portfolioError } = await supabase
-      .from("portfolios")
+      .from("portfolio")
       .select();
 
     if (portfolioError) {
