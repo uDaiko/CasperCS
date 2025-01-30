@@ -1,10 +1,10 @@
 import type { StockApiResponse } from "~/types";
 
-export const useCalculateStockTotal = (asset) => {
+export const useFetchStockPrice = (asset) => {
   const supabase = useSupabaseClient();
   const user = useSupabaseUser();
 
-  const calculateAssetPrice = async () => {
+  const fetchAssetPrice = async () => {
     const { data, error } = await useAsyncData<StockApiResponse>(
       "stockdata",
       () =>
@@ -16,10 +16,10 @@ export const useCalculateStockTotal = (asset) => {
       console.error("Error fetching stock price:", error.value.message);
       return;
     }
-    return data.value.results[0].c * asset.amount;
+    return data.value.results[0].c
   };
 
   return {
-    calculateAssetPrice,
+    fetchAssetPrice,
   };
 };
