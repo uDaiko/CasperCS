@@ -6,30 +6,40 @@ const props = defineProps<{
   portfolioId: string;
 }>();
 const rawassetList = ref([]);
+const isLoading = ref(true)
+const totalResults = ref([])
 const supabase = useSupabaseClient();
 
-const { data } = await supabase
+const fetchAssetData = async() => {
+  const { data } = await supabase
   .from("stocks")
   .select()
   .eq("portfolio_id", props.portfolioId);
 
 rawassetList.value = data;
 
-const calculateFinalizedAssetList = async () => {
+
   const assetPromises = rawassetList.value.map(async (asset) => {
-    const { calculateAssetPrice } = useCalculateStockTotal(asset);
-    const total = await calculateAssetPrice();
+    const { fetchAssetPrice } = useFetchStockPrice(asset);
+    const assetPrice = await fetchAssetPrice();
+    const total = asset.amount * assetPrice
     return {
       ...asset,
       total,
+      assetPrice
     };
   });
-  return await Promise.all(assetPromises);
-};
-const finalizedAssetList = await calculateFinalizedAssetList();
+  totalResults.value = await Promise.all(assetPromises);
+  isLoading.value = false
+
+}
+
+onMounted(fetchAssetData)
 
 const portfolioValue = computed(() => {
-  return finalizedAssetList.reduce((accumulator, currentObject) => {
+  console.log("the total")
+  console.log(totalResults)
+  return totalResults.value.reduce((accumulator, currentObject) => {
     return accumulator + currentObject.total;
   }, 0);
 });
@@ -56,7 +66,12 @@ const portfolioValue = computed(() => {
       <span class="text-green-300"></span>
     </div>
     <div class="text-4xl font-bold mb-4">
-      ${{ isNaN(portfolioValue) ? 0 : parseFloat(portfolioValue.toFixed(4)) }}
+      <template v-if="isLoading">
+        Fetching Total...
+      </template>
+      <template v-else>
+        ${{ isNaN(portfolioValue) ? 0 : parseFloat(portfolioValue.toFixed(4)) }}
+      </template>
     </div>
   </div>
 </template>

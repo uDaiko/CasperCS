@@ -22,18 +22,21 @@ const columns = [
     sortable: true,
   },
   {
-    key: "total",
-    label: "Total",
+    key: "price",
+    label: "Price",
     sortable: true,
   },
 ];
 
+console.log("die props")
+console.log(props.assetData)
 let stockDataRows: StockRow[] = [];
 stockDataRows = props.assetData.map((item) => ({
   id: item.id,
   ticker: item.ticker,
   amount: item.amount,
-  total: item.total,
+  price: item.assetPrice,
+  
 }));
 </script>
 
