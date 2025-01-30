@@ -20,8 +20,6 @@ export const useFetchCoinPrice = (coin: string) => {
      
       return error
     }
-    console.log("this is the return in comp")
-    console.log(data.value)
     return  data.value
   };
   return {

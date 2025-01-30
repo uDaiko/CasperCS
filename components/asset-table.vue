@@ -28,15 +28,13 @@ const columns = [
   },
 ];
 
-console.log("die props")
-console.log(props.assetData)
 let stockDataRows: StockRow[] = [];
 stockDataRows = props.assetData.map((item) => ({
   id: item.id,
   ticker: item.ticker,
   amount: item.amount,
   price: item.assetPrice,
-  
+
 }));
 </script>
 

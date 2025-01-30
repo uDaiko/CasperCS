@@ -34,8 +34,6 @@ rawassetList.value = data;
 
 }
 onMounted(fetchAssetData)
-console.log("the raw asset list")
-console.log(calculatedAssets)
 
 </script>
 
