@@ -37,8 +37,6 @@ rawassetList.value = data;
 onMounted(fetchAssetData)
 
 const portfolioValue = computed(() => {
-  console.log("the total")
-  console.log(totalResults)
   return totalResults.value.reduce((accumulator, currentObject) => {
     return accumulator + currentObject.total;
   }, 0);
