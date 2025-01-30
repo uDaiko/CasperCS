@@ -1,12 +1,4 @@
 export default defineEventHandler(async (event) => {
-  if (process.server) {
-    console.log("Running on the server");
-  }
-
-  if (process.client) {
-    console.log("Running on the client");
-  }
-
   const query = getQuery(event);
   const ticker = query.ticker as string;
 
