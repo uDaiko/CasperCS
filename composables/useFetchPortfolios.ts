@@ -1,3 +1,5 @@
+import type { InvestmentPortfolio } from "~/types";
+
 export const useFetchPortfolios = () => {
   const fetchStockPortfolios = async () => {
     const supabase = useSupabaseClient();
@@ -12,7 +14,8 @@ export const useFetchPortfolios = () => {
     }
     console.log("the portfolio data");
     console.log(portfolioData);
-    return portfolioData;
+
+    return portfolioData as InvestmentPortfolio[];
   };
   return {
     fetchStockPortfolios,

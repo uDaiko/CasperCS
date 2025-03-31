@@ -4,6 +4,7 @@ export type InvestmentPortfolio = {
   id: string;
   type: InvestmentType;
   name: string;
+  style: string;
 };
 
 export type StockRow = {
