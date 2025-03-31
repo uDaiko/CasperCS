@@ -12,8 +12,6 @@ export const useFetchPortfolios = () => {
       console.log("error when fetching portfolios");
       return;
     }
-    console.log("the portfolio data");
-    console.log(portfolioData);
 
     return portfolioData as InvestmentPortfolio[];
   };
