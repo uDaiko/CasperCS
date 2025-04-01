@@ -29,7 +29,6 @@ const handleLogin = async () => {
 
     toast.add({
       title: "Login Successful",
-      description: "login was successful",
       icon: "i-heroicons-check-circle",
       color: "green",
     });
@@ -86,28 +85,60 @@ watch(
 </script>
 
 <template>
-  <UCard v-if="!user" class="bg-slate-700 mt-6">
-    <template #header>Sign-in</template>
-    <form @submit.prevent="handleLogin">
-      <UFormGroup class="mb-4" label="Email" name="email" :required="true"
-        help="After signing in you will be redirected to the main page">
-        <UInput type="email" placeholder="Type in your email" class="bg-black mb-2" required="true" v-model="email" />
-        <UInput type="password" placeholder="Type in your password" class="bg-black" required="true"
-          v-model="password" />
-      </UFormGroup>
-      <UButton type="submit" variant="solid">Login</UButton>
-    </form>
-    <div class="mt-4 pt-4 border-t border-gray-600">
-      <p class="text-sm text-gray-400 mb-2">If you want to try out the application click here!</p>
-      <UButton @click="handleTestLogin" variant="solid" color="gray">
-        Login as Test User
-      </UButton>
+  <div class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+      <UCard v-if="!user" class="bg-slate-950/50 shadow-lg ">
+        <template #header>
+          <div class="space-y-1">
+            <h3 class="text-xl text-white">Sign in</h3>
+            <p class="text-sm text-slate-400">
+              Enter your credentials below to access your account
+            </p>
+          </div>
+        </template>
+
+        <form @submit.prevent="handleLogin" class="space-y-4">
+          <div class="space-y-2">
+            <label for="email" class="text-slate-300">Email</label>
+            <UInput id="email" type="email" v-model="email" placeholder="name@example.com"
+              class="border-slate-700 bg-slate-800/50 text-white placeholder:text-slate-500 focus-visible:ring-slate-600"
+              required=" true" />
+          </div>
+          <div class="space-y-2">
+            <label for="password" class="text-slate-300">Password</label>
+            <UInput id="password" type="password" v-model="password" placeholder="••••••••"
+              class="border-slate-700 bg-slate-800/50 text-white placeholder:text-slate-500 focus-visible:ring-slate-600"
+              required="true" />
+          </div>
+          <UButton type="submit" class="w-full bg-indigo-600 text-white hover:bg-indigo-700">
+            Sign in
+          </UButton>
+        </form>
+
+        <div class="relative px-6 py-3">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-slate-800"></div>
+          </div>
+          <div class="relative flex justify-center text-xs uppercase">
+            <span class="bg-slate-950/50 px-2 text-slate-400">Or continue with</span>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-4 p-6">
+          <UButton @click="handleTestLogin" variant="outline"
+            class="w-full border-slate-700 bg-transparent text-white hover:bg-slate-800">
+            <UIcon name="i-heroicons-user" class="mr-2 h-4 w-4" />
+            A Test User
+          </UButton>
+        </div>
+      </UCard>
+
+      <UCard v-else>
+        <template #header>
+          You have been signed in! Go to the main page
+          <UButton @click="navigateTo('/')">Go to Main Page</UButton>
+        </template>
+      </UCard>
     </div>
-  </UCard>
-  <UCard v-else>
-    <template #header>
-      You have been signed in! Go to the main page
-      <button @click="navigateTo('/')">Go to Main Page</button>
-    </template>
-  </UCard>
+  </div>
 </template>
