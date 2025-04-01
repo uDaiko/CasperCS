@@ -8,7 +8,12 @@ export default defineNuxtConfig({
       enabled: true,
     },
   },
-  modules: ["@nuxt/ui", "@nuxtjs/supabase", "@nuxtjs/google-fonts", "@nuxt/icon"],
+  modules: [
+    "@nuxt/ui",
+    "@nuxtjs/supabase",
+    "@nuxtjs/google-fonts",
+    "@nuxt/icon",
+  ],
   googleFonts: {
     families: {
       Inter: [100, 200, 300, 400, 500, 600, 700],
@@ -22,6 +27,8 @@ export default defineNuxtConfig({
 
     public: {
       baseUrl: process.env.BASE_URL ?? "http://localhost:3000",
+      TEST_USER_EMAIL: process.env.TEST_USER_EMAIL,
+      TEST_USER_PASSWORD: process.env.TEST_USER_PASSWORD,
     },
   },
 });
