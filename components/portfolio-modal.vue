@@ -87,7 +87,7 @@ const save = async () => {
           </div>
         </UFormGroup>
 
-        <UButton class=" bg-indigo-600 text-white hover:bg-indigo-700" label="Save" type="submit" @click="save"
+        <UButton class="bg-green-600 text-white hover:bg-green-700" label="Save" type="submit" @click="save"
           :disabled="isLoading" />
       </UForm>
     </UCard>

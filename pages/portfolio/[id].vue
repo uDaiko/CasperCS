@@ -10,14 +10,14 @@ const rawassetList = ref([]);
 const isModalOpen = ref(false);
 const portfolioId = route.params.id;
 
-const fetchAssetData = async() => {
+const fetchAssetData = async () => {
   const { data } = await supabase
-  .from("stocks")
-  .select()
-  .eq("portfolio_id", portfolioId);
+    .from("stocks")
+    .select()
+    .eq("portfolio_id", portfolioId);
 
-  
-rawassetList.value = data;
+
+  rawassetList.value = data;
 
 
   const assetPromises = rawassetList.value.map(async (asset) => {
@@ -39,7 +39,7 @@ onMounted(fetchAssetData)
 
 <template>
   <UContainer class="py-8">
-    <UButton color="gray" label="Add New Asset" @click="isModalOpen = true" />
+    <UButton class="bg-green-600 text-white hover:bg-green-700" label="Add New Asset" @click="isModalOpen = true" />
     <AssetTable :asset-data="calculatedAssets" />
   </UContainer>
   <AssetModal v-model="isModalOpen" />
