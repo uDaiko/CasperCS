@@ -43,38 +43,28 @@ const save = async () => {
 
 <template>
   <UModal v-model="isModalOpen">
-    <UCard>
-      <h2 class="mb-3">Add a new portfolio</h2>
+    <UCard class="bg-slate-800 shadow-lg">
+      <h2 class="mb-3 text-white">Add a new asset</h2>
 
       <UForm>
-        <UFormGroup
-          label="Asset Ticker"
-          name="name"
-          class="mb-4"
-          :required="true"
-        >
-          <UInput
-            placeholder="What is your asset's ticker information?"
-            v-model="name"
-          />
+        <UFormGroup label="Asset Ticker" name="name" class="mb-4" :ui="{
+          label: {
+            base: 'text-white'
+          }
+        }" :required="true">
+          <UInput placeholder="What is your asset's ticker information?" v-model="name" />
         </UFormGroup>
 
-        <UFormGroup
-          label="Asset Amount"
-          :required="true"
-          name="asset-amount"
-          class="mb-4"
-        >
+        <UFormGroup label="Asset Amount" :ui="{
+          label: {
+            base: 'text-white'
+          }
+        }" :required="true" name="asset-amount" class="mb-4">
           <UInput placeholder="How many?" v-model="amount" />
         </UFormGroup>
 
-        <UButton
-          color="black"
-          label="Save"
-          type="submit"
-          @click="save"
-          :disabled="isLoading"
-        />
+        <UButton class="bg-green-600 text-white hover:bg-green-700" label="Save" type="submit" @click="save"
+          :disabled="isLoading" />
       </UForm>
     </UCard>
   </UModal>
