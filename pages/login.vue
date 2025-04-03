@@ -125,8 +125,7 @@ watch(
         </div>
 
         <div class="flex flex-col gap-4 p-6">
-          <UButton @click="handleTestLogin" variant="outline"
-            class="w-full border-slate-700 bg-transparent text-white hover:bg-slate-800">
+          <UButton @click="handleTestLogin" variant="outline" class="w-full text-white bg-green-600 hover:bg-green-700">
             <UIcon name="i-heroicons-user" class="mr-2 h-4 w-4" />
             A Test User
           </UButton>
