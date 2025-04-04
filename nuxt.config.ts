@@ -24,6 +24,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     STOCKAPI_KEY: process.env.STOCKAPI_KEY,
+    CRYPTOAPI_KEY: process.env.CRYPTOAPI_KEY,
 
     public: {
       baseUrl: process.env.BASE_URL ?? "http://localhost:3000",
