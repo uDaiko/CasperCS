@@ -68,7 +68,14 @@ const portfolioValue = computed(() => {
       <span class="text-lg font-semibold">{{ name }} Crypto Portfolio</span>
       <span class="text-green-300"></span>
     </div>
-    <div class="text-4xl font-bold mb-4">$24,369.41</div>
+    <div class="text-4xl font-bold mb-4">
+      <template v-if="isLoading">
+        Fetching Total...
+      </template>
+      <template v-else>
+        ${{ isNaN(portfolioValue) ? 0 : parseFloat(portfolioValue.toFixed(4)) }}
+      </template>
+    </div>
   </div>
 
   <div :class="[getGradientClass, 'rounded-xl p-4 shadow-lg']" v-if="type === 'Stocks'">
