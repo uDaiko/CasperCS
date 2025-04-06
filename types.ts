@@ -9,9 +9,10 @@ export type InvestmentPortfolio = {
 
 export type StockRow = {
   id: number;
-  name: string;
+  ticker: string;
   amount: number;
   total: number;
+  assetPrice: number;
 };
 export type StockApiResponse = {
   results: Array<{
