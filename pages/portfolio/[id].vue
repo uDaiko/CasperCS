@@ -27,7 +27,7 @@ const fetchPortfolioType = async () => {
 
 const fetchAssetData = async () => {
   const { data } = await supabase
-    .from("stocks")
+    .from("assets")
     .select()
     .eq("portfolio_id", portfolioId);
 
