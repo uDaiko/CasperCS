@@ -2,7 +2,7 @@
 const supabase = useSupabaseClient();
 const props = defineProps({
   modelValue: Boolean,
-  portfolioId: String | String([]),
+  portfolioId: String
 });
 const emit = defineEmits(["update:modelValue"]);
 const toast = useToast();
@@ -20,10 +20,12 @@ const save = async () => {
   isDisabled.value = true;
 
   try {
-    const { error } = await supabase.from("stocks").insert({
+    const { error } = await supabase.from("assets").insert({
       id: undefined,
       ticker: name.value,
       amount: amount.value,
+      created_at: new Date(),
+      portfolio_id: props.portfolioId,
       user_id: undefined,
     });
     if (error) throw error;

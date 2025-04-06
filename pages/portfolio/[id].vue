@@ -11,7 +11,7 @@ const rawassetList = ref([]);
 const portfolioType = ref<InvestmentType>("Stocks");
 
 const isModalOpen = ref(false);
-const portfolioId = route.params.id;
+const portfolioId = typeof route.params.id === 'string' ? route.params.id : route.params.id[0];
 
 const fetchPortfolioType = async () => {
   const { data } = await supabase
@@ -67,5 +67,5 @@ onMounted(async () => {
     <UButton class="bg-green-600 text-white hover:bg-green-700" label="Add New Asset" @click="isModalOpen = true" />
     <AssetTable :asset-data="calculatedAssets" />
   </UContainer>
-  <AssetModal v-model="isModalOpen" />
+  <AssetModal v-model="isModalOpen" :portfolio-id="portfolioId" />
 </template>
