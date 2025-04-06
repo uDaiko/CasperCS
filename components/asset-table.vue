@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { StockRow } from "~/types";
 
-const props = defineProps({
-  assetData: Object,
-});
+const props = defineProps<{
+  assetData: StockRow[] | null
+}>();
 
 const columns = [
   {
@@ -22,22 +22,29 @@ const columns = [
     sortable: true,
   },
   {
-    key: "price",
+    key: "assetPrice",
     label: "Price",
     sortable: true,
   },
+  {
+    key: "total",
+    label: "Total Value",
+    sortable: true,
+  }
 ];
 
-let stockDataRows: StockRow[] = [];
-stockDataRows = props.assetData.map((item) => ({
-  id: item.id,
-  ticker: item.ticker,
-  amount: item.amount,
-  price: item.assetPrice,
-
-}));
+const stockDataRows = computed(() => {
+  if (!props.assetData) return [];
+  return props.assetData.map((item) => ({
+    id: item.id,
+    ticker: item.ticker,
+    amount: item.amount,
+    assetPrice: item.assetPrice,
+    total: item.total
+  }));
+});
 </script>
 
 <template>
-  <UTable :columns="columns" :rows="stockDataRows"> </UTable>
+  <UTable :columns="columns" :rows="stockDataRows" />
 </template>
