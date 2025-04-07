@@ -40,6 +40,7 @@ const fetchAssetData = async () => {
     const assetPromises = rawassetList.value.map(async (asset) => {
       const { getPrice } = useGetAssetPrice(asset, portfolioType.value);
       const assetPrice = await getPrice();
+      console.log("this is the asset price", assetPrice);
       const total = asset.amount * assetPrice;
 
       return {

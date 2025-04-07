@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { InvestmentType } from "~/types";
+import { useGetAssetPrice } from "~/composables/useGetAssetPrice";
+
 const props = defineProps<{
   type: InvestmentType;
   name: string;
@@ -30,27 +32,32 @@ const getGradientClass = computed(() => {
 });
 
 const fetchAssetData = async () => {
-  const { data } = await supabase
-    .from("stocks")
-    .select()
-    .eq("portfolio_id", props.portfolioId);
+  try {
+    const { data } = await supabase
+      .from("assets")
+      .select("id, amount, ticker")
+      .eq("portfolio_id", props.portfolioId);
 
-  rawassetList.value = data;
+    rawassetList.value = data || [];
 
+    const assetPromises = rawassetList.value.map(async (asset) => {
+      const { getPrice } = useGetAssetPrice(asset, props.type);
+      const assetPrice = await getPrice();
+      const total = asset.amount * assetPrice;
 
-  const assetPromises = rawassetList.value.map(async (asset) => {
-    const { fetchAssetPrice } = useFetchStockPrice(asset);
-    const assetPrice = await fetchAssetPrice();
-    const total = asset.amount * assetPrice
-    return {
-      ...asset,
-      total,
-      assetPrice
-    };
-  });
-  totalResults.value = await Promise.all(assetPromises);
-  isLoading.value = false
+      return {
+        ...asset,
+        total,
+        assetPrice
+      };
+    });
 
+    totalResults.value = await Promise.all(assetPromises);
+  } catch (error) {
+    console.error('Error fetching asset data:', error);
+  } finally {
+    isLoading.value = false;
+  }
 }
 
 onMounted(fetchAssetData)
@@ -73,7 +80,7 @@ const portfolioValue = computed(() => {
         Fetching Total...
       </template>
       <template v-else>
-        ${{ isNaN(portfolioValue) ? 0 : parseFloat(portfolioValue.toFixed(4)) }}
+        ${{ isNaN(portfolioValue) ? 0 : Math.ceil(portfolioValue) }}
       </template>
     </div>
   </div>
@@ -88,7 +95,7 @@ const portfolioValue = computed(() => {
         Fetching Total...
       </template>
       <template v-else>
-        ${{ isNaN(portfolioValue) ? 0 : parseFloat(portfolioValue.toFixed(4)) }}
+        ${{ isNaN(portfolioValue) ? 0 : Math.ceil(portfolioValue) }}
       </template>
     </div>
   </div>
