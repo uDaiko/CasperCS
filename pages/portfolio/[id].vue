@@ -2,6 +2,7 @@
 import AssetTable from "~/components/asset-table.vue";
 import { useFetchStockPrice } from "~/composables/useFetchStockPrice";
 import { useFetchCoinPrice } from "~/composables/useFetchCoinPrice";
+import { useGetAssetPrice } from "~/composables/useGetAssetPrice";
 import type { InvestmentType, StockRow } from "~/types";
 
 const supabase = useSupabaseClient();
@@ -36,19 +37,10 @@ const fetchAssetData = async () => {
     rawassetList.value = data || [];
 
     const assetPromises = rawassetList.value.map(async (asset) => {
-      let assetPrice;
-
-      if (portfolioType.value === "Stocks") {
-        const { fetchAssetPrice } = useFetchStockPrice(asset);
-        assetPrice = await fetchAssetPrice();
-      } else {
-        console.log('Fetching coin price for:', asset.ticker);
-        const { fetchCoinPrice } = useFetchCoinPrice(asset.ticker);
-        const coinData = await fetchCoinPrice();
-        assetPrice = coinData[asset.ticker]?.usd || 0;
-      }
-
+      const { getPrice } = useGetAssetPrice(asset, portfolioType.value);
+      const assetPrice = await getPrice();
       const total = asset.amount * assetPrice;
+
       return {
         id: asset.id,
         ticker: asset.ticker,
