@@ -7,6 +7,7 @@ import type { InvestmentType, StockRow } from "~/types";
 
 const supabase = useSupabaseClient();
 const route = useRoute();
+const toast = useToast();
 const calculatedAssets = ref<StockRow[]>([]);
 const rawassetList = ref([]);
 const portfolioType = ref<InvestmentType>("Stocks");
@@ -57,6 +58,33 @@ const fetchAssetData = async () => {
   }
 }
 
+const handleDeleteAsset = async (id: number) => {
+  try {
+    const { error } = await supabase
+      .from("assets")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
+
+    // Refresh the asset data after deletion
+    await fetchAssetData();
+
+    toast.add({
+      description: "Asset deleted successfully",
+      icon: "i-heroicons-check-circle",
+      color: "green",
+    });
+  } catch (error) {
+    console.error('Error deleting asset:', error);
+    toast.add({
+      description: "Failed to delete asset",
+      icon: "i-heroicons-exclamation-circle",
+      color: "red",
+    });
+  }
+};
+
 onMounted(async () => {
   await fetchPortfolioType();
   await fetchAssetData();
@@ -72,7 +100,7 @@ onMounted(async () => {
       <span class=" text-white">Loading assets...</span>
     </div>
 
-    <AssetTable v-else :asset-data="calculatedAssets" />
+    <AssetTable v-else :asset-data="calculatedAssets" @delete="handleDeleteAsset" />
   </UContainer>
   <AssetModal v-model="isModalOpen" :portfolio-id="portfolioId" />
 </template>
