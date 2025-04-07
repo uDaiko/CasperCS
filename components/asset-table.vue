@@ -39,8 +39,8 @@ const stockDataRows = computed(() => {
     id: item.id,
     ticker: item.ticker,
     amount: item.amount,
-    assetPrice: item.assetPrice,
-    total: item.total
+    assetPrice: Number(item.assetPrice.toFixed(4)),
+    total: Number(item.total.toFixed(4))
   }));
 });
 </script>
