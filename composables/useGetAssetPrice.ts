@@ -10,10 +10,11 @@ export const useGetAssetPrice = (
   const getPrice = async () => {
     if (type === "Stocks") {
       const stockData = await fetchAssetPrice();
-      return stockData[asset.ticker]?.usd || 0;
+      console.log("this is the stock data", stockData);
+      return stockData.value?.results?.[0]?.c || 0;
     } else {
       const coinData = await fetchCoinPrice();
-      return coinData?.data?.[asset.ticker]?.quote?.USD?.price || 0;
+      return coinData.data?.[asset.ticker].quote.USD.price || 0;
     }
   };
 

@@ -16,7 +16,7 @@ export const useFetchStockPrice = (asset) => {
       console.error("Error fetching stock price:", error.value.message);
       return;
     }
-    return data.value.results[0].c
+    return data;
   };
 
   return {
