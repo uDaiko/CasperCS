@@ -1,5 +1,6 @@
 # CasperCS
 This project is designed to be an easy as possible to use portfolio tracker. It was built as a fullstack application with NuxtJS and a PostgreSQL backend.
+The site can be found here https://caspercs.onrender.com/
 ## Important Note!
 The project is still a work in progress with many things planned. It is operating with low credit apis and as a result can be slow at times when too many requests are sent. 
 ## Roadmap
