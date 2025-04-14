@@ -14,6 +14,11 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts",
     "@nuxt/icon",
   ],
+  colorMode: {
+    preference: "light",
+    fallback: "light",
+    dataValue: "light",
+  },
   googleFonts: {
     families: {
       Inter: [100, 200, 300, 400, 500, 600, 700],
