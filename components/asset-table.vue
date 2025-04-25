@@ -80,12 +80,11 @@ const handleDelete = (id: number) => {
         click: () => handleDelete(row.id),
         class: 'text-red-500'
       }]]" :ui="{
-        background: 'bg-slate-900',
-        item: {
+        content: 'bg-slate-900 border-none', item: {
           base: 'text-slate-300 hover:bg-slate-800/50'
         }
       }">
-        <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal" class="text-slate-400" />
+        <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal" class="text-slate-400 " />
       </UDropdown>
     </template>
   </UTable>
