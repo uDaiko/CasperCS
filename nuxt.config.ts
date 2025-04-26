@@ -30,11 +30,11 @@ export default defineNuxtConfig({
   runtimeConfig: {
     STOCKAPI_KEY: process.env.STOCKAPI_KEY,
     CRYPTOAPI_KEY: process.env.CRYPTOAPI_KEY,
+    TEST_USER_EMAIL: process.env.TEST_USER_EMAIL,
+    TEST_USER_PASSWORD: process.env.TEST_USER_PASSWORD,
 
     public: {
       baseUrl: process.env.BASE_URL ?? "http://localhost:3000",
-      TEST_USER_EMAIL: process.env.TEST_USER_EMAIL,
-      TEST_USER_PASSWORD: process.env.TEST_USER_PASSWORD,
     },
   },
 });
