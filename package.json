@@ -14,6 +14,10 @@
     "@nuxt/ui": "^2.18.5",
     "@nuxtjs/google-fonts": "^3.2.0",
     "@nuxtjs/supabase": "^1.4.0",
+    "@solana/wallet-adapter-base": "^0.9.24",
+    "@solana/wallet-adapter-phantom": "^0.9.25",
+    "@solana/wallet-adapter-vue": "^0.4.5",
+    "@solana/web3.js": "^1.98.0",
     "nuxt": "^3.13.0",
     "vue": "latest",
     "vue-router": "latest"
