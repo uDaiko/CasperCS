@@ -41,19 +41,16 @@ const handleLogin = async () => {
       color: "red",
     });
   } finally {
-    isLoading = false;
+    isLoading.value = false;
   }
 };
 
 const handleTestLogin = async () => {
   isLoading.value = true;
   try {
-    const { error } = await supabaseClient.auth.signInWithPassword({
-      email: config.public.TEST_USER_EMAIL,
-      password: config.public.TEST_USER_PASSWORD,
-    });
+    const { success, error } = await $fetch('/api/test-login');
 
-    if (error) throw error;
+    if (!success) throw new Error(error || 'Authentication failed');
 
     toast.add({
       title: "Guest Login Successful",
