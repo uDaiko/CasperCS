@@ -45,30 +45,32 @@ const handleLogin = async () => {
   }
 };
 
-const handleTestLogin = async () => {
+const handleGuestLogin = async () => {
   isLoading.value = true;
   try {
-    const { success, error } = await $fetch('/api/test-login');
+    const { error } = await $fetch('/api/guest-login', {
+      method: 'POST'
+    });
 
-    if (!success) throw new Error(error || 'Authentication failed');
+    if (error) throw error;
 
     toast.add({
       title: "Guest Login Successful",
       icon: "i-heroicons-check-circle",
       color: "green",
     });
-    navigateTo('/');
   } catch (error) {
     console.error(error);
     toast.add({
-      title: "guest login Unsuccessful",
+      title: "Guest Login Unsuccessful",
+      description: "there was an error when logging in as guest. try again",
       icon: "i-heroicons-exclamation-circle",
       color: "red",
     });
   } finally {
     isLoading.value = false;
   }
-};
+}
 
 watch(
   user,
@@ -122,7 +124,8 @@ watch(
         </div>
 
         <div class="flex flex-col gap-4 p-6">
-          <UButton @click="handleTestLogin" variant="outline" class="w-full text-white bg-green-600 hover:bg-green-700">
+          <UButton @click="handleGuestLogin" variant="outline"
+            class="w-full text-white bg-green-600 hover:bg-green-700">
             <UIcon name="i-heroicons-user" class="mr-2 h-4 w-4" />
             A Test User
           </UButton>
