@@ -16,8 +16,8 @@ export default defineEventHandler(async (event) => {
     if (error) throw error;
 
     return {
-      success: true,
-      data,
+      session: data.session,
+      user: data.user,
     };
   } catch (error) {
     console.error("Guest login error:", error);

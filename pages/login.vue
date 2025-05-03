@@ -48,11 +48,18 @@ const handleLogin = async () => {
 const handleGuestLogin = async () => {
   isLoading.value = true;
   try {
-    const { error } = await $fetch('/api/guest-login', {
+    const { session, user } = await $fetch('/api/guest-login', {
       method: 'POST'
     });
 
-    if (error) throw error;
+    if (!session || !user) throw new Error('No session or user data received');
+
+    const { error: sessionError } = await supabaseClient.auth.setSession({
+      access_token: session.access_token,
+      refresh_token: session.refresh_token
+    });
+
+    if (sessionError) throw sessionError;
 
     toast.add({
       title: "Guest Login Successful",
