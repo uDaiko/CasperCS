@@ -25,7 +25,7 @@ export default defineNuxtConfig({
     },
   },
   supabase: {
-    redirect: true,
+    redirect: false,
   },
   runtimeConfig: {
     STOCKAPI_KEY: process.env.STOCKAPI_KEY,
@@ -35,6 +35,8 @@ export default defineNuxtConfig({
 
     public: {
       baseUrl: process.env.BASE_URL ?? "http://localhost:3000",
+      SUPABASE_URL: process.env.SUPABASE_URL,
+      SUPABASE_ANON_KEY: process.env.SUPABASE_KEY,
     },
   },
 });
