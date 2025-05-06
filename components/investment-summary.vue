@@ -13,6 +13,7 @@ const rawassetList = ref([]);
 const isLoading = ref(true)
 const totalResults = ref([])
 const supabase = useSupabaseClient();
+const isDropdownOpen = ref(false);
 
 const getGradientClass = computed(() => {
   const styleValue = props.style;
@@ -67,36 +68,48 @@ const portfolioValue = computed(() => {
     return accumulator + currentObject.total;
   }, 0);
 });
+
+const toggleDropdown = (event: Event) => {
+  isDropdownOpen.value = !isDropdownOpen.value;
+};
+
+const handleEdit = (event: Event) => {
+  isDropdownOpen.value = false;
+};
+
+const handleDelete = (event: Event) => {
+  isDropdownOpen.value = false;
+};
 </script>
 
 <template>
-  <div :class="[getGradientClass, 'rounded-xl p-4 shadow-lg']" v-if="type === 'Crypto'">
-    <div class="flex justify-between items-center mb-4">
-      <span class="text-lg font-semibold">{{ name }} Crypto Portfolio</span>
-      <span class="text-green-300"></span>
-    </div>
-    <div class="text-4xl font-bold mb-4">
-      <template v-if="isLoading">
-        Fetching Total...
-      </template>
-      <template v-else>
-        ${{ isNaN(portfolioValue) ? 0 : Math.ceil(portfolioValue) }}
-      </template>
-    </div>
-  </div>
+  <div :class="[getGradientClass, 'rounded-xl p-4 shadow-lg relative']">
+    <NuxtLink :to="{
+      name: 'portfolio-id',
+      params: { id: props.portfolioId },
+      query: { name: props.name },
+    }" class="block no-underline text-inherit">
+      <div class="flex justify-between items-center mb-4 pointer-events-none">
+        <span class="text-lg font-semibold pointer-events-auto">{{ name }} {{ type }} Portfolio</span>
+      </div>
+      <div class="text-4xl font-bold mb-4 pointer-events-none">
+        <template v-if="isLoading">Fetching Total...</template>
+        <template v-else>${{ isNaN(portfolioValue) ? 0 : Math.ceil(portfolioValue) }}</template>
+      </div>
+    </NuxtLink>
 
-  <div :class="[getGradientClass, 'rounded-xl p-4 shadow-lg']" v-if="type === 'Stocks'">
-    <div class="flex justify-between items-center mb-4">
-      <span class="text-lg font-semibold">{{ name }} Stock Portfolio</span>
-      <span class="text-green-300"></span>
-    </div>
-    <div class="text-4xl font-bold mb-4">
-      <template v-if="isLoading">
-        Fetching Total...
-      </template>
-      <template v-else>
-        ${{ isNaN(portfolioValue) ? 0 : Math.ceil(portfolioValue) }}
-      </template>
+    <div class="absolute top-4 right-4 z-20">
+      <UButton icon="i-heroicons-pencil" color="white" variant="ghost" @click="toggleDropdown" />
+      <div v-if="isDropdownOpen" class="absolute right-1 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50">
+        <UButton block variant="ghost" @click="handleEdit"
+          class="text-white hover:bg-gray-700 w-full text-left px-4 py-2">
+          Edit
+        </UButton>
+        <UButton block variant="ghost" @click="handleDelete"
+          class="text-red-400 hover:bg-gray-700 w-full text-left px-4 py-2">
+          Delete
+        </UButton>
+      </div>
     </div>
   </div>
 </template>
