@@ -9,6 +9,11 @@ const props = defineProps<{
   style: string;
 }>();
 
+const emit = defineEmits<{
+  (e: 'delete', id: string): void
+  (e: 'edit', id: number): void
+}>();
+
 const rawassetList = ref([]);
 const isLoading = ref(true)
 const totalResults = ref([])
@@ -77,7 +82,8 @@ const handleEdit = (event: Event) => {
   isDropdownOpen.value = false;
 };
 
-const handleDelete = (event: Event) => {
+const handleDelete = () => {
+  emit('delete', props.portfolioId);
   isDropdownOpen.value = false;
 };
 </script>
