@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import AssetTable from "~/components/asset-table.vue";
-import { useFetchStockPrice } from "~/composables/useFetchStockPrice";
-import { useFetchCoinPrice } from "~/composables/useFetchCoinPrice";
 import { useGetAssetPrice } from "~/composables/useGetAssetPrice";
 import type { InvestmentType, StockRow } from "~/types";
 
@@ -15,6 +13,9 @@ const isLoading = ref(true);
 
 const isModalOpen = ref(false);
 const portfolioId = typeof route.params.id === 'string' ? route.params.id : route.params.id[0];
+const editingAsset = ref<StockRow | null>(null);
+
+
 
 const fetchPortfolioType = async () => {
   const { data } = await supabase
@@ -59,6 +60,13 @@ const fetchAssetData = async () => {
   }
 }
 
+const handleEditAsset = (id: number) => {
+  const asset = calculatedAssets.value.find(asset => asset.id === id);
+  if (asset) {
+    editingAsset.value = asset;
+    isModalOpen.value = true;
+  }
+};
 const handleDeleteAsset = async (id: number) => {
   try {
     const { error } = await supabase
@@ -100,7 +108,8 @@ onMounted(async () => {
       <span class=" text-white">Loading assets...</span>
     </div>
 
-    <AssetTable v-else :asset-data="calculatedAssets" @delete="handleDeleteAsset" />
+    <AssetTable v-else :asset-data="calculatedAssets" @delete="handleDeleteAsset" @edit="handleEditAsset" />
   </UContainer>
-  <AssetModal v-model="isModalOpen" :portfolio-id="portfolioId" />
+  <AssetModal v-model="isModalOpen" :portfolio-id="portfolioId" :editing-asset="editingAsset"
+    @asset-updated="fetchAssetData" />
 </template>

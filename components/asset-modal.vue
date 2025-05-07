@@ -2,9 +2,13 @@
 const supabase = useSupabaseClient();
 const props = defineProps({
   modelValue: Boolean,
-  portfolioId: String
+  portfolioId: String,
+  editingAsset: {
+    type: Object,
+    default: null
+  }
 });
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "asset-updated"]);
 const toast = useToast();
 
 const name = ref();
@@ -16,23 +20,57 @@ const isModalOpen = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
+watch(() => props.editingAsset, (newVal) => {
+  if (newVal) {
+    name.value = newVal.ticker;
+    amount.value = newVal.amount;
+  } else {
+    name.value = '';
+    amount.value = '';
+  }
+}, { immediate: true });
+
 const save = async () => {
   isDisabled.value = true;
 
   try {
-    const { error } = await supabase.from("assets").insert({
-      id: undefined,
-      ticker: name.value,
-      amount: amount.value,
-      created_at: new Date(),
-      portfolio_id: props.portfolioId,
-      user_id: undefined,
-    });
-    if (error) throw error;
+    if (props.editingAsset) {
+      const { error } = await supabase
+        .from("assets")
+        .update({
+          ticker: name.value,
+          amount: amount.value,
+        })
+        .eq("id", props.editingAsset.id);
+
+      if (error) throw error;
+      toast.add({
+        description: "Asset updated successfully",
+        icon: "i-heroicons-check-circle",
+        color: "green",
+      });
+      emit("asset-updated");
+    } else {
+      const { error } = await supabase.from("assets").insert({
+        id: undefined,
+        ticker: name.value,
+        amount: amount.value,
+        created_at: new Date(),
+        portfolio_id: props.portfolioId,
+        user_id: undefined,
+      });
+      if (error) throw error;
+      toast.add({
+        description: "Asset added successfully",
+        icon: "i-heroicons-check-circle",
+        color: "green",
+      });
+      emit("asset-updated");
+    }
   } catch (err) {
     console.log(err);
     toast.add({
-      description: "Failed adding the asset info",
+      description: props.editingAsset ? "Failed updating the asset" : "Failed adding the asset",
       icon: "i-heroicons-exclamation-circle",
       color: "red",
     });
@@ -46,7 +84,7 @@ const save = async () => {
 <template>
   <UModal v-model="isModalOpen">
     <UCard class="bg-slate-800 shadow-lg">
-      <h2 class="mb-3 text-white">Add a new asset</h2>
+      <h2 class="mb-3 text-white">{{ editingAsset ? 'Edit asset' : 'Add a new asset' }}</h2>
 
       <UForm>
         <UFormGroup label="Asset Ticker" name="name" class="mb-4" :ui="{
@@ -65,8 +103,8 @@ const save = async () => {
           <UInput placeholder="How many?" v-model="amount" />
         </UFormGroup>
 
-        <UButton class="bg-green-600 text-white hover:bg-green-700" label="Save" type="submit" @click="save"
-          :disabled="isLoading" />
+        <UButton class="bg-green-600 text-white hover:bg-green-700" :label="editingAsset ? 'Update' : 'Save'"
+          type="submit" @click="save" :disabled="isDisabled" />
       </UForm>
     </UCard>
   </UModal>
