@@ -15,7 +15,11 @@ const isModalOpen = ref(false);
 const portfolioId = typeof route.params.id === 'string' ? route.params.id : route.params.id[0];
 const editingAsset = ref<StockRow | null>(null);
 
-
+watch(isModalOpen, (openState) => {
+  if (!openState) {
+    editingAsset.value = null;
+  }
+});
 
 const fetchPortfolioType = async () => {
   const { data } = await supabase
