@@ -68,7 +68,6 @@ const handleDeleteAsset = async (id: number) => {
 
     if (error) throw error;
 
-    // Refresh the asset data after deletion
     await fetchAssetData();
 
     toast.add({

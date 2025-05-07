@@ -16,14 +16,8 @@ onBeforeMount(async () => {
   <main class="container mx-auto px-4 py-8">
     <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
       <div v-for="portfolio in portfolios" :key="portfolio.id">
-        <NuxtLink :to="{
-          name: 'portfolio-id',
-          params: { id: portfolio.id },
-          query: { name: portfolio.name },
-        }">
-          <InvestmentSummary :type="portfolio.type" :name="portfolio.name" :portfolio-id="portfolio.id"
-            :style="portfolio.style" />
-        </NuxtLink>
+        <InvestmentSummary :type="portfolio.type" :name="portfolio.name" :portfolio-id="portfolio.id"
+          :style="portfolio.style" />
       </div>
       <NewPortfolioButton />
     </section>
