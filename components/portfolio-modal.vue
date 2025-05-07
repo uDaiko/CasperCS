@@ -10,7 +10,7 @@ const portfolioStyles = [
 const props = defineProps({
   modelValue: Boolean,
 });
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "portfolio-created"]);
 const toast = useToast();
 
 const name = ref();
@@ -35,6 +35,13 @@ const save = async () => {
       user_id: undefined,
     });
     if (error) throw error;
+
+    emit("portfolio-created");
+    toast.add({
+      description: "Portfolio created successfully",
+      icon: "i-heroicons-check-circle",
+      color: "green",
+    });
   } catch (err) {
     console.log(err);
     toast.add({
