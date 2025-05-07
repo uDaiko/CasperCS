@@ -10,8 +10,8 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'delete', id: string): void
-  (e: 'edit', id: number): void
+  (e: 'delete', id: string): void,
+  (e: 'edit', id: string): void
 }>();
 
 const rawassetList = ref([]);
@@ -74,11 +74,12 @@ const portfolioValue = computed(() => {
   }, 0);
 });
 
-const toggleDropdown = (event: Event) => {
+const toggleDropdown = () => {
   isDropdownOpen.value = !isDropdownOpen.value;
 };
 
 const handleEdit = (event: Event) => {
+  emit('edit', props.portfolioId);
   isDropdownOpen.value = false;
 };
 

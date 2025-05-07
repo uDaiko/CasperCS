@@ -9,13 +9,18 @@ const portfolioStyles = [
 ];
 const props = defineProps({
   modelValue: Boolean,
+  editingPortfolio: {
+    type: Object,
+    default: null
+  }
 });
-const emit = defineEmits(["update:modelValue", "portfolio-created"]);
+
+const emit = defineEmits(["update:modelValue", "portfolio-created", "portfolio-updated"]);
 const toast = useToast();
 
-const name = ref();
-const category = ref();
-const style = ref();
+const name = ref('');
+const category = ref('');
+const style = ref('');
 let isDisabled = ref(false);
 
 const isModalOpen = computed({
@@ -23,29 +28,59 @@ const isModalOpen = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
+watch(() => props.editingPortfolio, (newVal) => {
+  if (newVal) {
+    name.value = newVal.name;
+    category.value = newVal.type;
+    style.value = newVal.style;
+  } else {
+    name.value = '';
+    category.value = '';
+    style.value = '';
+  }
+}, { immediate: true });
+
 const save = async () => {
   isDisabled.value = true;
 
   try {
-    const { error } = await supabase.from("portfolios").insert({
-      id: undefined,
-      name: name.value,
-      type: category.value,
-      style: style.value.toString(),
-      user_id: undefined,
-    });
-    if (error) throw error;
+    if (props.editingPortfolio) {
+      const { error } = await supabase
+        .from("portfolios")
+        .update({
+          name: name.value,
+          type: category.value,
+          style: style.value.toString(),
+        })
+        .eq("id", props.editingPortfolio.id);
 
-    emit("portfolio-created");
-    toast.add({
-      description: "Portfolio created successfully",
-      icon: "i-heroicons-check-circle",
-      color: "green",
-    });
+      if (error) throw error;
+      emit("portfolio-updated");
+      toast.add({
+        description: "Portfolio updated successfully",
+        icon: "i-heroicons-check-circle",
+        color: "green",
+      });
+    } else {
+      const { error } = await supabase.from("portfolios").insert({
+        id: undefined,
+        name: name.value,
+        type: category.value,
+        style: style.value.toString(),
+        user_id: undefined,
+      });
+      if (error) throw error;
+      emit("portfolio-created");
+      toast.add({
+        description: "Portfolio created successfully",
+        icon: "i-heroicons-check-circle",
+        color: "green",
+      });
+    }
   } catch (err) {
     console.log(err);
     toast.add({
-      description: "Failed creating a new portfolio",
+      description: props.editingPortfolio ? "Failed updating portfolio" : "Failed creating a new portfolio",
       icon: "i-heroicons-exclamation-circle",
       color: "red",
     });
@@ -59,7 +94,7 @@ const save = async () => {
 <template>
   <UModal v-model="isModalOpen">
     <UCard :class="`bg-slate-800 shadow-lg`">
-      <h2 class="mb-3 text-white">Add a new portfolio</h2>
+      <h2 class="mb-3 text-white">{{ editingPortfolio ? 'Edit portfolio' : 'Add a new portfolio' }}</h2>
 
       <UForm>
         <UFormGroup label="Portfolio Name" name="portfolioName" :ui="{
@@ -94,8 +129,8 @@ const save = async () => {
           </div>
         </UFormGroup>
 
-        <UButton class="bg-green-600 text-white hover:bg-green-700" label="Save" type="submit" @click="save"
-          :disabled="isLoading" />
+        <UButton class="bg-green-600 text-white hover:bg-green-700" :label="editingPortfolio ? 'Update' : 'Save'"
+          type="submit" @click="save" :disabled="isDisabled" />
       </UForm>
     </UCard>
   </UModal>
