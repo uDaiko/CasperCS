@@ -13,7 +13,7 @@ const signOut = async () => {
     console.error("Logout error:", error);
   }
 };
-const itemsAccount = [
+const itemsAccount = computed(() => [
   [
     {
       label: user.value?.email,
@@ -28,7 +28,7 @@ const itemsAccount = [
       click: signOut,
     },
   ],
-];
+]);
 const settingsMessage = () => {
   toast.add({
     description: "settings page has not been implemented yet",
